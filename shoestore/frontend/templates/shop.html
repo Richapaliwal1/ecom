@@ -1,6 +1,8 @@
+
 {% include "header.html" %}
 {% include "footer.html" %}
 {% load static %}
+<script src="{% static 'js/script.js' %}"></script>
    
       <!-- banner -->
       <div class="inner_page-banner one-img">
@@ -213,8 +215,11 @@
                   </div>
                   <!-- //deals -->
                </div>
+
                <div class="left-ads-display col-lg-9">
+                  <form action="{%url 'cart_page' %}" method="post">
                   <div class="row">
+                    
                      {%for product in data%}
                      <div class="col-lg-4 col-md-6 col-sm-6 product-men women_two">
                         <div class="product-toys-info">
@@ -269,17 +274,17 @@
                                           </li>
                                        </ul>
                                     </div>
+                                    
                                     <div class="toys single-item hvr-outline-out">
-                                       <form action="{%url 'checkout_page' %}" method="post">
-                                           {% csrf_token %} 
-                                          <input type="hidden" name="image" value="{{product.image.url}}">
-                                          <input type="hidden" name="add" value="1">
-                                          <input type="hidden" name="item" value="{{product.product_name}}">
-                                          <input type="hidden" name="Price" value="{{product.price}}">
-                                          <button type="submit" class="toys-cart ptoys-cart">
+                                       
+                                          <button type="button" class="toys-cart ptoys-cart" id="submit"  >
                                           <i class="fas fa-cart-plus"></i>
                                           </button>
-                                       </form>
+                                       {% csrf_token %} 
+                                          <input type="hidden" name="image" value="{{product.image.url}}" id="image">
+                                          <input type="hidden" name="add" value="1">
+                                          <input type="hidden" name="product_name" value="{{product.product_name}}" id="product_name">
+                                          <input type="hidden" name="Price" value="{{product.price}}" id="price">
                                     </div>
                                  </div>
                                  <div class="clearfix"></div>
@@ -287,8 +292,10 @@
                            </div>
                         </div>
                      </div>
-                     {%endfor%}
+                    {%endfor%}                  
                </div>
+
+               </form>    
             </div>
          </div>
       </section>

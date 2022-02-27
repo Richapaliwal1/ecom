@@ -1,8 +1,18 @@
-{{product_name}}
+
 {% include "header.html" %}
 {% include "footer.html" %}
 {%load static%}
-   
+<style type="text/css">
+   body {
+  /* Set "my-sec-counter" to 0 */
+  counter-reset: my-sec-counter;
+}
+   h5::before {
+  /* Increment "my-sec-counter" by 1 */
+  counter-increment: my-sec-counter;
+  content:  counter(my-sec-counter) ". ";
+}
+</style>
          <!-- banner -->
          <div class="inner_page-banner one-img">
          </div>
@@ -41,29 +51,36 @@
                               </tr>
                            </thead>
                            <tbody>
-                              {%for product in data%}
+                              
+                              {% for cart in mycart %}
+                              <form action="{% url 'deletedata' cart.id%}" method="post">
                               <tr class="rem1">
-                                 <td class="invert">1</td>
-                                 <td class="invert-image"><a href="{% url 'single_page' %}"><img src="{{image.url}}" alt=" " class="img-responsive"></a></td>
+                                 <td class="invert"><h5></h5></td>
+                                 <td class="invert-image"><a href="{% url 'single_page' %}"><img src="{{cart.image}}" alt=" " class="img-responsive"></a></td>
                                  <td class="invert">
                                     <div class="quantity">
                                        <div class="quantity-select">
                                           <div class="entry value-minus">&nbsp;</div>
-                                          <div class="entry value"><input type="number" style="width:50px; height: 30px" required></div>
+                                          <div class="entry value"><input type="number" style="width:50px; height: 30px" value="1" required></div>
                                           <div class="entry value-plus active">&nbsp;</div>
                                        </div>
                                     </div>
                                  </td>
-                                 <td class="invert">{{product_name}}</td>
-                                 <td class="invert">${{price}}</td>
+                                 <td class="invert">{{cart.product_name}}</td>
+                                 <td class="invert">${{cart.price}}</td>
                                  <td class="invert">
                                     <div class="rem">
-                                       <div class="close1"> </div>
+                                       <div class="close1"> 
+                                          {% csrf_token %}
+                                          <input type="submit" class="btn btn-danger" value="Remove">
+                                       </div>
                                     </div>
                                  </td>
                               </tr>
+                              </form>
                               {%endfor%}
-                              <tr class="rem2">
+                              
+                             <!--  <tr class="rem2">
                                  <td class="invert">2</td>
                                  <td class="invert-image"><a href="{% url 'single_page' %}"><img src="{% static 'images/f2.jpg' %}" alt=" " class="img-responsive"></a></td>
                                  <td class="invert">
@@ -102,13 +119,15 @@
                                        <div class="close3"> </div>
                                     </div>
                                  </td>
-                              </tr>
+                              </tr> -->
+                              
                            </tbody>
                         </table>
                      </div>
                      <div class="checkout-left">
                         <div class="col-md-4 checkout-left-basket">
-                           <h4>Continue to basket</h4>
+
+                           <h4><a href="{%url 'cart_page'%}" style="color: #ea1d5d"> Continue to basket</a></h4>
                            <ul>
                               <li>Product1 <i>-</i> <span>$675.00 </span></li>
                               <li>Product2 <i>-</i> <span>$325.00 </span></li>

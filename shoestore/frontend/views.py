@@ -1,10 +1,11 @@
-
+from django.http import HttpResponse
 from django.shortcuts import  render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm 
 from django.contrib.auth.forms import UserCreationForm
 from .models import Product
+from .models import Cart								
 # Create your views here.
 
 def home_page(request):
@@ -13,17 +14,19 @@ def home_page(request):
 def about_page(request):
 	return render(request, "about.html", context={})
 
+def cart_page(request):
+	mycart = Cart.objects.all()
+	return render(request, "checkout.html", {'mycart':mycart})
+def delete_data(request,id):
+    if request.method == 'POST':
+        pi = Cart.objects.get(pk=id)
+        pi.delete()
+        return render(request,'checkout.html')
 def checkout_page(request):
-	product_name = request.GET['product_name']
-	price = request.GET['Price']
-	image = request.GET['image']
-	context = {
-	'product_name':product_name,
-	'price':price,
-	'image':image,
-
-	}
-	return render(request, "checkout.html", context)
+	if request.method == "POST":
+		cart = Cart(product_name=request.POST['product_name'], price=request.POST['price'], image=request.POST['image'])
+		cart.save()
+	return render(request,'checkout.html')
 
 def contact_page(request):
 	return render(request, "contact.html", context={})	

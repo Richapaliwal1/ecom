@@ -74,7 +74,7 @@
                            <button type="button" data-toggle="modal" data-target="#exampleModal"> <span class="far fa-user"></span></button>
                         </li>
                         <li class="toyscart toyscart2 cart cart box_1">
-                           <form action="#" method="post" class="last">
+                           <form action="{%url 'cart_page'%}" method="post" class="last">
                                {% csrf_token %} 
                               <input type="hidden" name="cmd" value="_cart">
                               <input type="hidden" name="display" value="1">

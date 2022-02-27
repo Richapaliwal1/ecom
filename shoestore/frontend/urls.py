@@ -17,6 +17,8 @@ urlpatterns = [
 	path('typography', views.typography_page, name="typography_page"),
 	path('login', views.login_request, name="login_request"),
 	path('register', views.register, name="register"),
+	path('cart', views.cart_page, name="cart_page"),
+	path('delete/<int:id>/',views.delete_data, name="deletedata"),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
