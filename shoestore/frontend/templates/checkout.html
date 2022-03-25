@@ -13,6 +13,7 @@
   content:  counter(my-sec-counter) ". ";
 }
 </style>
+
          <!-- banner -->
          <div class="inner_page-banner one-img">
          </div>
@@ -28,6 +29,7 @@
                </ul>
             </div>
          </div>
+
          <!-- //short-->
          <!--Checkout-->  
          <!-- //banner -->
@@ -37,8 +39,18 @@
                <div class="shop_inner_inf">
                   <div class="privacy about">
                      <h3>Chec<span>kout</span></h3>
+                     {%for x in detail%}
+               <table border="1">  
+                     
+                           <tr>
+                           
+                           <td>{{ x.email }}</td>
+                           
+                         </tr>
+                     
+                </table> 
+                     {%endfor%}
                      <div class="checkout-right">
-                        <h4>Your shopping cart contains: <span>3 Products</span></h4>
                         <table class="timetable_sub">
                            <thead>
                               <tr>
@@ -52,11 +64,11 @@
                            </thead>
                            <tbody>
                               
-                              {% for cart in mycart %}
+                              {% for cart in allcart %}
                               <form action="{% url 'deletedata' cart.id%}" method="post">
                               <tr class="rem1">
                                  <td class="invert"><h5></h5></td>
-                                 <td class="invert-image"><a href="{% url 'single_page' %}"><img src="{{cart.image}}" alt=" " class="img-responsive"></a></td>
+                                 <td class="invert-image"><a href="{% url 'single_page' %}"><img src="{{cart.product.image.url}}" alt=" " class="img-responsive" height="120px" width="100px"></a></td>
                                  <td class="invert">
                                     <div class="quantity">
                                        <div class="quantity-select">
@@ -66,8 +78,8 @@
                                        </div>
                                     </div>
                                  </td>
-                                 <td class="invert">{{cart.product_name}}</td>
-                                 <td class="invert">${{cart.price}}</td>
+                                 <td class="invert">{{cart.product.product_name}}</td>
+                                 <td class="invert">${{cart.product.price}}</td>
                                  <td class="invert">
                                     <div class="rem">
                                        <div class="close1"> 
@@ -128,60 +140,62 @@
                         <div class="col-md-4 checkout-left-basket">
 
                            <h4><a href="{%url 'cart_page'%}" style="color: #ea1d5d"> Continue to basket</a></h4>
-                           <ul>
-                              <li>Product1 <i>-</i> <span>$675.00 </span></li>
-                              <li>Product2 <i>-</i> <span>$325.00 </span></li>
-                              <li>Product3 <i>-</i> <span>$405.00 </span></li>
-                              <li>Total Service Charges <i>-</i> <span>$55.00</span></li>
-                              <li>Total <i>-</i> <span>$1405.00</span></li>
-                           </ul>
+                           <ul><br>
+                              Total Cart Price = {{total}}
+                           </ul><br>
                         </div>
                         <div class="col-md-8 address_form">
                            <h4>Add a new Details</h4>
-                           <form action="{% url 'payment_page' %}" method="post" class="creditly-card-form agileinfo_form">
+                           <form action="{%url 'payment_page'%}" method="post" class="creditly-card-form agileinfo_form">
                                {% csrf_token %} 
+                               
                               <section class="creditly-wrapper wrapper">
                                  <div class="information-wrapper">
                                     <div class="first-row form-group">
                                        <div class="controls">
                                           <label class="control-label">Full name: </label>
-                                          <input class="billing-address-name form-control" type="text" name="name" placeholder="Full name">
+                                          <input class="billing-address-name form-control" type="text" name="cust_name" placeholder="Full name">
                                        </div>
                                        <div class="card_number_grids">
                                           <div class="card_number_grid_left">
                                              <div class="controls">
-                                                <label class="control-label">Mobile number:</label>
-                                                <input class="form-control" type="text" placeholder="Mobile number">
+                                                <label class="control-label">Phone:</label>
+                                                <input class="form-control" type="text" placeholder="Phone" name="phone">
                                              </div>
                                           </div>
                                           <div class="card_number_grid_right">
                                              <div class="controls">
-                                                <label class="control-label">Landmark: </label>
-                                                <input class="form-control" type="text" placeholder="Landmark">
+                                                <label class="control-label">Address: </label>
+                                                <input class="form-control" type="text" placeholder="Address" name="address">
                                              </div>
                                           </div>
                                           <div class="clear"> </div>
                                        </div>
                                        <div class="controls">
-                                          <label class="control-label">Town/City: </label>
-                                          <input class="form-control" type="text" placeholder="Town/City">
-                                       </div>
-                                       <div class="controls">
-                                          <label class="control-label">Address type: </label>
-                                          <select class="form-control option-w3ls">
-                                             <option>Office</option>
-                                             <option>Home</option>
-                                             <option>Commercial</option>
-                                          </select>
+                                          <label class="control-label">Email: </label>
+                                          <input class="form-control" type="Email" placeholder="Email" name="email">
                                        </div>
                                     </div>
-                                    <button class="submit check_out">Delivery to this Address</button>
-                                 </div>
-                              </section>
+                                    <div class="card_number_grids">
+                                          <div class="card_number_grid_left">
+                                             <div class="controls">
+                                                <label class="control-label">Total amount is:</label>
+                                                <input class="form-control" type="text" placeholder="{{total}}" name="total" size="30px" value="{{total}}" readonly>
+                                             </div>
+                                          </div>
+                                
+                              {%for x in detail%}
+                              <input type="radio" name="Address" id="{{x.cust_name}}{{x.email}}{{x.phone}}{{x.address}}" >{{x.cust_name}}<br>{{x.email}}<br>{{x.phone}}<br>{{x.address}}
+                              {%endfor%}<br>
+                              <input type="submit" name="submit" class="submit check_out" value="Deliver to this Address">
+                               </div>
+                              </section><br>
                            </form>
                            <div class="checkout-right-basket">
                               <a href="{% url 'payment_page' %}">Make a Payment </a>
                            </div>
+
+                           
                         </div>
                         <div class="clearfix"> </div>
                         <div class="clearfix"></div>
@@ -191,6 +205,7 @@
                <!-- //top products -->
             </div>
       </section>
+                       
       <!--subscribe-address-->
       <section class="subscribe">
          <div class="container-fluid">

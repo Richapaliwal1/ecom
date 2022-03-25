@@ -19,6 +19,10 @@ urlpatterns = [
 	path('register', views.register, name="register"),
 	path('cart', views.cart_page, name="cart_page"),
 	path('delete/<int:id>/',views.delete_data, name="deletedata"),
+	path('add-to-cart/',views.addToCart, name="addToCart"),
+	path('cust_details',views.cust_details, name="cust_details"),
+	path('details',views.details, name="details"),
+
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
