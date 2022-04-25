@@ -12,8 +12,8 @@ class Categories(models.Model):
 		return self.name
 
 class Customer(models.Model):
-	cust_name = models.CharField(max_length=120)
-	email = models.EmailField(max_length=120)
+	cust_name = models.ForeignKey(User, on_delete=models.CASCADE)
+	email = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cust_email")
 	address = models.CharField(max_length=120)
 	phone = models.CharField(max_length=10)
 	
@@ -53,7 +53,6 @@ class Cart(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	date = models.DateField(auto_now_add=True)
 	is_active = models.BooleanField(default=True)
-
 	def __str__(self):
 		return self.product.product_name
 

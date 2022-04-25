@@ -46,16 +46,16 @@ def icon_page(request):
 	return render(request, "icon.html", context={})	
 
 def payment_page(request):
-	total = 1 
-	if request.method == 'POST':
-		client = razorpay.Client(auth=("rzp_test_Tve6FawTIgxnWU", "AqXKVHo3TrRdUtjkFWvoGsn0"))
+	# if request.method == 'GET':
+	client = razorpay.Client(auth=("rzp_test_Tve6FawTIgxnWU", "AqXKVHo3TrRdUtjkFWvoGsn0"))
+	price= request.GET.get('total')
+	DATA = {
+		"amount"  : price,
+		"currency": "INR",
+	}
 
-		DATA = {
-			"amount"  : total,
-			"currency": "INR",
-		}
-		client.order.create(data=DATA)
-	return render(request, "payment.html", {"pay" : pay})	
+	client.order.create(data=DATA)
+	return render(request, "payment.html", {'price' : price})	
 
 def product_page(request):
 	return render(request, "product.html", context={})	
@@ -71,7 +71,7 @@ def single_page(request):
 	return render(request, "single.html", context={})	
 
 def typography_page(request):
-	return render(request, "typograph.html", context={})
+	return render(request, "typography.html", context={})
 
 def register(request):
 	if request.method == "POST":
